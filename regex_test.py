@@ -51,7 +51,7 @@ s_txt.search("ac")
 # >> 결과 x
 
 
-# ? 기호
+# ? 기호 (한 번만 존재하는 것을 뽑고 싶다!)
 s_txt = re.compile("py?n") # 찾고 싶은 패턴 지정
 s_txt.search("pyn") # ? 앞에 있는 y문자가 1회 나오고 ?뒤의 n 문자가 나옴
 # >> <re.Match object; span=(0, 3), match='pyn'>
@@ -63,7 +63,7 @@ s_txt.search("pin")
 # >> 결과 x
 
 
-# * 기호
+# * 기호 (여러 번 존재하는 것을 뽑고 싶다!)
 s_txt = re.compile("py*n") # 찾고 싶은 패턴 지정
 s_txt.search("pyn") # * 앞에 있는 y 문자가 1회 나오고 * 뒤의 n문자 나옴
 # >> <re.Match object; span=(0, 3), match='pyn'>
@@ -73,3 +73,108 @@ s_txt.search("pn") # * 앞에 있는 y 문자가 없고 * 뒤의 n 문자 나옴
 # >> <re.Match object; span=(0, 2), match='pn'>
 s_txt.search("pin") # * 앞에 있는 y 문자 대신 i 문자 나오고 * 뒤의 n 문자 나옴
 # >> 결과 x
+
+
+# + 기호
+s_txt = re.compile("py+n")
+s_txt.search("pyn") # + 앞에 있는 y문자가 1회 나오고 + 뒤의 n문자 나옴
+# >> <re.Match object; span=(0, 3), match='pyn'>
+s_txt.search("pyyn") # + 앞에 있는 y문자가 2회 나오고 + 뒤의 n문자 나옴
+# >> <re.Match object; span=(0, 4), match='pyyn'>
+s_txt.search("pn") # + 앞에 있는 y 문자가 없고 + 뒤의 n 문자 나옴
+# >> 결과 x 
+s_txt.search("pin") # + 앞에 있는 y 문자 대신 i가 있으며 + 뒤에는 n 문자 나옴
+# >> 결과 x
+
+
+# ^ 기호 (시작되는 글자를 지정 가능!)
+s_txt = re.compile("^p") # 소문자 p로 시작되는 단어나 문장 추출해라!
+s_txt.search("python")
+# >> <re.Match object; span=(0, 1), match='p'>
+s_txt.search("sython")
+# >> 결과 x
+
+
+# $ 기호 (끝나는 글자를 지정 가능!)
+s_txt = re.compile("n$") # 소문자 n으로 끝나는 단어나 문장 추출해라!
+s_txt.search("python")
+# >> <re.Match object; span=(5, 6), match='n'>
+s_txt.search("apple")
+# >> 결과 x
+
+
+# [문자1, 문자2...] 기호 (해당 글자나 숫자가 포함이 되면 다 출력 가능!)
+s_txt = re.compile("[pa]") # pa이라는 단어를 찾아라!가 아님! p나 a가 들어가 있는 것 다 추출해라!
+s_txt.search("python")
+# >> <re.Match object; span=(0, 1), match='p'>
+s_txt.search("pineapple")
+# >> <re.Match object; span=(0, 1), match='p'>
+s_txt.search("banana")
+# >> <re.Match object; span=(1, 2), match='a'>
+s_txt.search("mouse")
+# >> 결과 x
+
+
+# [^문자1,문자2...] 기호 (^기호 뒤 문자를 제외한 모든 글자 출력!)
+s_txt = re.compile("[^pa]") # 소문자 p나 소문자 a를 제외한 나머지 글자를 출력해라!
+s_txt.search("python") # 소문자 p는 제외를 함! 근데 그뒤에 값 y가 나오는데 소문자 p나 a가 아닌 글자라서 결과가 나옴
+# >> <re.Match object; span=(1, 2), match='y'>
+s_txt.search("p")
+# >> 결과 x 
+s_txt.search("pineapple") # 소문자 p나 소문자 a는 안 되는데 다른 값 때문에 출력
+# >> <re.Match object; span=(1, 2), match='i'>
+s_txt.search("a")
+# >> 결과 x
+
+
+# [] 범위 검색
+s_txt = re.compile("[0-9]") # 0~9까지의 숫자 포함 단어,문장 찾기
+s_txt.search("abc123")
+# >> <re.Match object; span=(3, 4), match='1'>
+
+s_txt = re.compile("[a-d]") # a~d까지의 소문자 포함 단어,문장 찾기
+s_txt.search("abc123")
+# >> <re.Match object; span=(0, 1), match='a'>
+
+s_txt = re.compile("[A-D]") # A~D까지의 대문자 포함 단어,문장 찾기
+s_txt.search("abc123")
+# >> 결과 x
+
+s_txt = re.compile("[가-사]") # 가~사까지의 한글 포함 단어,문장 찾기
+s_txt.search("강원도")
+# >> <re.Match object; span=(0, 1), match='강'>
+
+
+# meta character
+# \t와 \n
+# \t는 tab 기능
+# \n은 줄바꿈 기능
+# 근데 \t나 \n을 그대로 출력하고 싶어
+# ↓
+
+# escape character
+# meta character의 기능을 취소하는 것
+
+
+# findall() 함수 (포함되는 것 다 출력)
+s_txt = "제 생일은 2000년 1월 5일 입니다"
+re.findall("\d",s_txt) # 숫자 골라내기, 근데 한 글자씩?
+# >> ['2', '0', '0', '0', '1', '5']
+
+re.findall("\d+",s_txt) # 숫자 패턴에 맞는 것 전부 다 골라내기
+# >> ['2000', '1', '5']
+
+
+# split() 함수 (주어진 문자열을 기준으로 분리함)
+s_txt = "https://blog.naver.com/abc1234"
+re.split("/",s_txt) # / 을 기준으로 분리
+# >> ['https:', '', 'blog.naver.com', 'abc1234']
+
+re.split("//",s_txt) # // 을 기준으로 분리
+# >> ['https:', 'blog.naver.com/abc1234']
+
+
+# sub() (주어진 패턴과 일치하는 문자를 변경, 필요없는 문자열 제거할 때 사용)
+s_txt = "https://blog.naver.com/abc1234"
+re.sub("https://"," ", s_txt) # https://이 나오면 " "(공백)으로 바꿔라!
+# >> ' blog.naver.com/abc1234'
