@@ -26,6 +26,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager # 크롬 드라이버 자동 최신
 
+from selenium.webdriver.chrome.options import Options
+
 import time # time 모듈은 페이지가 열릴 때까지 기다리기 위해 사용함
 
 query_txt = input('키워드 검색 : ')
@@ -47,4 +49,21 @@ driver = webdriver.Chrome(path)
 # browser = webdriver.Chrome(options=options)
 
 driver.get("https://korean.visitkorea.or.kr/main/main.do#home")
-time.sleep(10) # 브라우저가 계속 켜져있는 것이 아닌 함수 종료시 브라우저도 같이 종료
+time.sleep(3) # 페이지가 열릴 때 까지 3초동안 기다림
+# 브라우저가 계속 켜져있는 것이 아닌 함수 종료시 브라우저도 같이 종료됨
+
+# 브라우저 꺼짐 방지 → 안 먹힘ㅠㅡㅠ
+chrome_options = Options()
+chrome_options.add_experimental_option("detach", True)
+
+
+# 검색창의 이름을 찾아서 검색어 입력하기
+# driver.find_element_by_class_name("search").click()
+
+element = driver.find_element_by_id("inp_search")
+
+element.send_keys(query_txt)
+
+driver.find_element_by_link_text("검색").click()
+# ＊ 검색 후 자동으로 브라우저가 종료됨
+# 버전 오류인가? 해결 방법 찾기
