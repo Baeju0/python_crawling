@@ -30,7 +30,10 @@ from selenium.webdriver.chrome.options import Options
 
 import time # time 모듈은 페이지가 열릴 때까지 기다리기 위해 사용함
 
-query_txt = input('키워드 검색 : ')
+import sys # sys모듈은 웹페이지 조회 결과 수집할 때 사용
+
+query_txt = input('크롤링할 키워드 검색 : ')
+f_name = input('저장할 파일 경로와 이름 입력 : ')
 
 # 크롬 드라이버 불러온 후 웹 브라우저 실행
 path = "C:\Temp\sel\chromedriver.exe" # 크롬 드라이버 설치 경로(불러오기)
@@ -74,9 +77,44 @@ element.send_keys(query_txt)
 
 driver.find_element_by_link_text("검색").click()
 # ＊ 검색 후 자동으로 브라우저가 종료됨
-# 버전 오류인가? 해결 방법 찾기
+# 해결 방법 찾기
 
-# stackoverflow에서 찾은 해결 방법
+
+# ---------------------------------------------------
+# 검색 후 결과 목록의 text 추출하기
+time.sleep(1)
+
+html = driver.page_source # 페이지의 모든 소스를 가져와라!
+soup = BeautifulSoup(html,'html.parser')
+list = soup.find('ul',class_='list_thumType type1') # soup.find는 해당 정보를 찾아줌(게시글 class 입력함, 정보 가져와라!)
+
+for i in list :
+    print(i.text.strip()) # text만 골라내라! strip함수는 문장의 좌우 공백 제거
+    print("\n")
+
+# ---------------------------------------------------
+# 추출한 텍스트를 txt 형식으로 저장하기
+# write 함수도 있지만
+# sys.stdout 사용(모니터가 아닌 다른 곳으로 출력 방향 바꾸기)
+stdout_test = sys.stdout
+f = open(f_name, 'a', encoding='UTF-8') # 저장할 때 encoding은 확실하게!(안 하면 다 깨질 수도 있음)
+sys.stdout = f
+# 위의 3줄 코드는 모니터에 출력하지 말고 지정된 파일에 저장하게 만듦
+
+html = driver.page_source
+soup = BeautifulSoup(html, 'html.parser')
+list = soup.find('ul',class_='list_thumType type1')
+
+for i in list :
+    print(i.text.strip())
+    print("\n")
+
+sys.stdout = stdout_test
+f.close()
+# 위에서 했던 검색 후 결과 목록 추출처럼 화면에 결과가 추출되지 않고
+# 지정한 곳으로 출력(저장) 됨(위에 f_name변수에 입력한 파일 경로에 저장!)
+
+# stackoverflow에서 찾은 해결 방법 (브라우저 종료에 대한)
 while(True) :
     pass
 # 위와 같은 코드를 추가해주니 자동으로 브라우저가 종료되지 않는다!!!예!
