@@ -49,12 +49,20 @@ driver = webdriver.Chrome(path)
 # browser = webdriver.Chrome(options=options)
 
 driver.get("https://korean.visitkorea.or.kr/main/main.do#home")
-time.sleep(3) # 페이지가 열릴 때 까지 3초동안 기다림
+# time.sleep(3) # 페이지가 열릴 때 까지 3초동안 기다림
+
 # 브라우저가 계속 켜져있는 것이 아닌 함수 종료시 브라우저도 같이 종료됨
 
+# time.sleep()과 다른 방법, implicity_wait()의 차이
+# time.sleep()은 ()에 입력한 시간동안 기다림(무조건 기다리기 때문에 지연됨)
+# implicity_wait()은 엔진 자체에서 파싱되는 시간을 기다려줌(페이지가 다 열리면 다음 동작 시랭)
+# 따라서 implicity_wait()를 사용하는 것이 더 효율적이다!
+driver.implicitly_wait(5)
+
+
 # 브라우저 꺼짐 방지 → 안 먹힘ㅠㅡㅠ
-chrome_options = Options()
-chrome_options.add_experimental_option("detach", True)
+# chrome_options = Options()
+# chrome_options.add_experimental_option("detach", True)
 
 
 # 검색창의 이름을 찾아서 검색어 입력하기
@@ -67,3 +75,8 @@ element.send_keys(query_txt)
 driver.find_element_by_link_text("검색").click()
 # ＊ 검색 후 자동으로 브라우저가 종료됨
 # 버전 오류인가? 해결 방법 찾기
+
+# stackoverflow에서 찾은 해결 방법
+while(True) :
+    pass
+# 위와 같은 코드를 추가해주니 자동으로 브라우저가 종료되지 않는다!!!예!
