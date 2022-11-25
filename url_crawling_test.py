@@ -6,6 +6,11 @@ import pandas as pd
 
 f = open('c:\\temp\\url_list.txt','r')
 
+# url_list.txt 내용
+# http://blog.naver.com
+# http://blog.daum.net
+# http://blog.tistory.com
+
 txt = f.readlines() # 여러 줄의 데이터를 한꺼번에 읽어 오기
 print(txt)
 
