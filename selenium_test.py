@@ -24,9 +24,10 @@
 # 라이브러리와 모듈 불러오기
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager # 크롬 드라이버 자동 최신
+# from webdriver_manager.chrome import ChromeDriverManager # 크롬 드라이버 자동 최신
 
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 import time # time 모듈은 페이지가 열릴 때까지 기다리기 위해 사용함
 
@@ -70,15 +71,21 @@ driver.implicitly_wait(5)
 
 # 검색창의 이름을 찾아서 검색어 입력하기
 # driver.find_element_by_class_name("search").click()
+driver.find_element(By.CLASS_NAME,"search").click()
 
-element = driver.find_element_by_id("inp_search")
+# element = driver.find_element_by_id("inp_search")
+element = driver.find_element(By.ID,"inp_search")
 
 element.send_keys(query_txt)
 
-driver.find_element_by_link_text("검색").click()
+# driver.find_element_by_link_text("검색").click()
+driver.find_element(By.LINK_TEXT, "검색").click()
+
+# 기존에 있던 코드가 자꾸 에러가 발생한다!?
+# ↑해결, selenium이 version update에 따라 구문이 변경됐다.
+
 # ＊ 검색 후 자동으로 브라우저가 종료됨
 # 해결 방법 찾기
-
 
 # ------------------------------------------------------
 # 검색 후 결과 목록의 text 추출하기
