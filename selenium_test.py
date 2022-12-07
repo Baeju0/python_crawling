@@ -38,7 +38,7 @@ f_name = input('저장할 파일 경로와 이름 입력 : ')
 
 # 크롬 드라이버 불러온 후 웹 브라우저 실행
 path = "C:\Temp\sel\chromedriver.exe" # 크롬 드라이버 설치 경로(불러오기)
-driver = webdriver.Chrome(path)
+driver = webdriver.Chrome(path) # 예시:c:\\Temp\\test.txt
 # ↓ 최신 버전 자동 설치 시 오류 발생
 # 크롬의 버전 확인하고 이에 맞는 크롬 드라이버 버전 설치(현재 ver.107)
 
@@ -121,6 +121,8 @@ sys.stdout = stdout_test
 f.close()
 # 위에서 했던 검색 후 결과 목록 추출처럼 화면에 결과가 추출되지 않고
 # 지정한 곳으로 출력(저장) 됨(위에 f_name변수에 입력한 파일 경로에 저장!)
+
+print("데이터 수집 완료!")
 
 # ------------------------------------------------------
 # stackoverflow에서 찾은 해결 방법 (브라우저 종료에 대한)
